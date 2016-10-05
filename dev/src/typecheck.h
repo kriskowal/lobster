@@ -1461,6 +1461,7 @@ struct TypeChecker
                         super_struc = list->head()->exptype->struc;  // Use the specialization.
                         for (auto &field : super_struc->fields)
                         {
+                            (void)field;
                             //SubTypeT(field.type, type->struc->fields[i].type, n, ArgName(i).c_str());
                             i++;
                         }

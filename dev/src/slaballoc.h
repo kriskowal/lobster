@@ -47,8 +47,6 @@ alloc_sized/dealloc_sized instead do store the size, if a more drop-in replaceme
 
 */
 
-//#define COLLECT_STATS
-
 #ifdef _DEBUG
     // uncomment if debugging with crtdbg functionality is required (for finding memory corruption)
     //#define PASSTHRUALLOC

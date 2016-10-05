@@ -664,6 +664,6 @@ OS-X / ios:
 
 SPEED TESTS
 ===========
-measured on speedtest.lobster, with instrumentations disabled.
+secs measured in release win32 on speedtest.lobster, other stats in debug.
 
 last_dynamically_typed: sec 10.1, ins 599572240, fcall 57534476, bcall 2534535, totalallocs 4501531, 58.2m ins/sec.

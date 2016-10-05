@@ -7,7 +7,7 @@ include "exception.lobster"
 include "vec.lobster"
 include "astar.lobster"
 
-function run_test_cases():
+function run_test_cases(is_speed_test):
     //trace_bytecode(1)
 
     value testa: [ a ]
@@ -46,18 +46,19 @@ function run_test_cases():
     unicodetests := [0x30E6, 0x30FC, 0x30B6, 0x30FC, 0x5225, 0x30B5, 0x30A4, 0x30C8]
     assert(equal(string2unicode(unicode2string(unicodetests)), unicodetests))
 
-    compres1, comperr1 := compile_run_code("1 + 2")
-    if(comperr1):
-        print(comperr1)
-    assert(compres1 == "3")
+    if(!is_speed_test):
+        compres1, comperr1 := compile_run_code("1 + 2")
+        if(comperr1):
+            print(comperr1)
+        assert(compres1 == "3")
 
-    /*
-    // this test makes it dependent on this file even in shipping builds, so off by default
-    compres2, comperr2 := compile_run_file("plugintest.lobster")
-    if(comperr2):
-        print(comperr2)
-    assert(compres2 == "plugintest return value")
-    */
+        /*
+        // this test makes it dependent on this file even in shipping builds, so off by default
+        compres2, comperr2 := compile_run_file("plugintest.lobster")
+        if(comperr2):
+            print(comperr2)
+        assert(compres2 == "plugintest return value")
+        */
 
     function scopetest():
         x := 1
@@ -326,16 +327,17 @@ function run_test_cases():
 
     assert(seconds_elapsed() - starttime > 0)
 
-    function cycletest():
-        struct cyclist: [ name, loop, next ]
-        cycle := [ "cycleouter", nil, [ "cycleinner", nil, nil ]:cyclist ]:cyclist
-        cycle.loop = cycle
-        cycle.next.loop = cycle.next
+    if(!is_speed_test):
+        function cycletest():
+            struct cyclist: [ name, loop, next ]
+            cycle := [ "cycleouter", nil, [ "cycleinner", nil, nil ]:cyclist ]:cyclist
+            cycle.loop = cycle
+            cycle.next.loop = cycle.next
 
-    cycletest()
-    assert(collect_garbage() == 4) // 2 vectors, 2 strings
+        cycletest()
+        assert(collect_garbage() == 4) // 2 vectors, 2 strings
 
     //"press enter to continue...".print
     //getline()
 
-run_test_cases()
+run_test_cases(false)

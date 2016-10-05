@@ -15,11 +15,8 @@
 namespace lobster
 {
 
-//#define VM_COUNTS
-
 #ifdef _DEBUG
     #define VM_PROFILER                     // tiny VM slowdown and memory usage when enabled
-    #define VM_COUNTS
 #endif
 
 struct VM : VMBase
@@ -445,7 +442,7 @@ struct VM : VMBase
 
     void FunIntro(int nargs_given, int *newip, int definedfunction, int *retip)
     {
-        #ifdef VM_COUNTS
+        #ifdef VM_PROFILER
             vm_counts_fcalls++;
         #endif
         
@@ -701,9 +698,7 @@ struct VM : VMBase
                     Output(OUTPUT_INFO, "%s(%d): %.1f %%", st.filenames[li.fileidx].c_str(), li.line,
                                                              c * 100.0f / total);
             }
-        #endif
 
-        #ifdef VM_COUNTS
             if (vm_counts_fcalls)
                 Output(OUTPUT_INFO, "ins %lld, fcall %lld, bcall %lld", vm_counts_ins, vm_counts_fcalls, vm_counts_bcalls);
         #endif
@@ -742,7 +737,7 @@ struct VM : VMBase
                 byteprofilecounts[ip - codestart]++;
             #endif
 
-            #ifdef VM_COUNTS
+            #ifdef VM_PROFILER
                 vm_counts_ins++;
             #endif
 
@@ -871,7 +866,7 @@ struct VM : VMBase
 
                 case IL_BCALL:
                 {
-                    #ifdef VM_COUNTS
+                    #ifdef VM_PROFILER
                         vm_counts_bcalls++;
                     #endif
                     auto nf = natreg.nfuns[*ip++];
