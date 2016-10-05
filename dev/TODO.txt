@@ -662,4 +662,8 @@ OS-X / ios:
 - open Xcode project, select static-lib / 32bit, set to release, build
 - then copy libSDL2.a to lib
 
+SPEED TESTS
+===========
+measured on speedtest.lobster, with instrumentations disabled.
 
+last_dynamically_typed: sec 10.1, ins 599572240, fcall 57534476, bcall 2534535, totalallocs 4501531, 58.2m ins/sec.

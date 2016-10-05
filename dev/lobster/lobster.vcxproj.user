@@ -7,7 +7,7 @@
     <LocalDebuggerMergeEnvironment>false</LocalDebuggerMergeEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>--verbose ../projects/totslike/totslike.lobster</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>--verbose samples/tests/speedtest.lobster</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>$(TargetDir)</LocalDebuggerWorkingDirectory>
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>

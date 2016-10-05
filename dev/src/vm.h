@@ -15,8 +15,11 @@
 namespace lobster
 {
 
+//#define VM_COUNTS
+
 #ifdef _DEBUG
     #define VM_PROFILER                     // tiny VM slowdown and memory usage when enabled
+    #define VM_COUNTS
 #endif
 
 struct VM : VMBase
@@ -73,11 +76,16 @@ struct VM : VMBase
     #define TOPPTR() (stack + sp + 1)
     #define OVERWRITE(o, n) TTOverwrite(o, n)
 
+    int64_t vm_counts_ins;
+    int64_t vm_counts_fcalls;
+    int64_t vm_counts_bcalls;
+
     VM(SymbolTable &_st, int *_code, int _len, const vector<LineInfo> &_lineinfo, const char *_pn)
         : stack(nullptr), stacksize(0), maxstacksize(DEFMAXSTACKSIZE), sp(-1), ip(nullptr),
           curcoroutine(nullptr), vars(nullptr), st(_st), codelen(_len), byteprofilecounts(nullptr), lineprofilecounts(nullptr),
           lineinfo(_lineinfo), debugpp(2, 50, true, -1), programname(_pn), vml(*this, st.uses_frame_state),
-          trace(false), trace_tail(true)
+          trace(false), trace_tail(true),
+          vm_counts_ins(0), vm_counts_fcalls(0), vm_counts_bcalls(0)
     {
         // search for "64bit" before trying to make a 64bit build, changes may be required
         assert(sizeof(int) == sizeof(void *));
@@ -437,6 +445,10 @@ struct VM : VMBase
 
     void FunIntro(int nargs_given, int *newip, int definedfunction, int *retip)
     {
+        #ifdef VM_COUNTS
+            vm_counts_fcalls++;
+        #endif
+        
         ip = newip;
 
         VMASSERT(*ip == IL_FUNSTART);
@@ -690,6 +702,11 @@ struct VM : VMBase
                                                              c * 100.0f / total);
             }
         #endif
+
+        #ifdef VM_COUNTS
+            if (vm_counts_fcalls)
+                Output(OUTPUT_INFO, "ins %lld, fcall %lld, bcall %lld", vm_counts_ins, vm_counts_fcalls, vm_counts_bcalls);
+        #endif
     }
 
     void EvalProgram(string &evalret)
@@ -723,6 +740,10 @@ struct VM : VMBase
             
             #ifdef VM_PROFILER
                 byteprofilecounts[ip - codestart]++;
+            #endif
+
+            #ifdef VM_COUNTS
+                vm_counts_ins++;
             #endif
 
             int opc = *ip++;
@@ -850,6 +871,9 @@ struct VM : VMBase
 
                 case IL_BCALL:
                 {
+                    #ifdef VM_COUNTS
+                        vm_counts_bcalls++;
+                    #endif
                     auto nf = natreg.nfuns[*ip++];
                     int n = *ip++;
                     if (n > (int)nf->args.v.size())
