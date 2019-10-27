@@ -315,6 +315,7 @@
     being able to say an arg is mut without specifying the type.
 
 - add to imgui functionality:
+  - support closable im_window; currently hard-coded to null
   - logging
     - everything that currently goes to LOG
     - specific logging for variables not in global scope: show a list of key/value.
