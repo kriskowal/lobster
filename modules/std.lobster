@@ -9,22 +9,22 @@ def map(xs, fun):
 def map2(xs, ys, fun): return map xs.length: fun(xs[_], ys[_])
 
 def filter(xs, fun):
-    let r = []
+    let r = vector_reserve(typeof return, xs.length)
     for(xs) x, i:
         if fun(x, i):
             r.push(x)
     return r
 
 def filter_indices(xs, fun):
-    let r = []
+    let r = vector_reserve(typeof return, xs.length)
     for(xs) x, i:
         if fun(x, i):
             r.push(i)
     return r
 
 def partition(xs, fun):
-    let t = []
-    let f = []
+    let t = vector_reserve(typeof return, xs.length/2)
+    let f = vector_reserve(typeof return, xs.length/2)
     for(xs) x, i:
         if fun(x, i):
             t.push(x)
@@ -33,8 +33,8 @@ def partition(xs, fun):
     return t, f
 
 def partition_indices(xs, fun):
-    let t = []
-    let f = []
+    let t = vector_reserve(typeof return, xs.length/2)
+    let f = vector_reserve(typeof return, xs.length/2)
     for(xs) x, i:
         if fun(x, i):
             t.push(i)
