@@ -172,7 +172,7 @@ extern void SetImageTexture(uint textureunit, const Texture &tex, int tf);
 extern uint UniformBufferObject(Shader *sh, const void *data, size_t len,
                                 string_view uniformblockname, bool ssbo, uint bo);
 
-// These must correspond to the constants in color.lobster
+// These must correspond to the constants in texture.lobster
 enum TextureFlag {
     TF_NONE = 0,
     TF_CLAMP = 1,
